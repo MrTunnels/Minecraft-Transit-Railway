@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class PacketTrainDataGuiClient extends PacketTrainDataBase {
+public class  PacketTrainDataGuiClient extends PacketTrainDataBase {
 
 	private static final Map<Long, PacketByteBuf> TEMP_PACKETS_RECEIVER = new HashMap<>();
 

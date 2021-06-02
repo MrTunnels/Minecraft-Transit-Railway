@@ -59,6 +59,7 @@ public class RenderSeat extends EntityRenderer<EntitySeat> implements IGui {
 	private static final ModelATrain MODEL_A_TRAIN_AEL = new ModelATrain(true);
 	private static final ModelATrainMini MODEL_A_TRAIN_AEL_MINI = new ModelATrainMini(true);
 	private static final ModelLightRail1 MODEL_LIGHT_RAIL_1 = new ModelLightRail1();
+	private static final ModelPepperlandShuttle MODEL_PEPPERLAND_SHUTTLE = new ModelPepperlandShuttle();
 
 	public RenderSeat(EntityRenderDispatcher dispatcher) {
 		super(dispatcher);
@@ -305,6 +306,8 @@ public class RenderSeat extends EntityRenderer<EntitySeat> implements IGui {
 //				return MODEL_A_TRAIN_AEL_MINI;
 			case LIGHT_RAIL_1:
 				return MODEL_LIGHT_RAIL_1;
+			case PEPPERLAND_SHUTTLE:
+				return MODEL_PEPPERLAND_SHUTTLE;
 			default:
 				return null;
 		}
