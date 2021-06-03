@@ -1,5 +1,6 @@
 package mtr.model;
 
+import mtr.data.Route;
 import mtr.gui.IGui;
 import mtr.render.MoreRenderLayers;
 import net.minecraft.client.model.ModelPart;
@@ -21,9 +22,9 @@ public abstract class ModelTrainBase extends EntityModel<Entity> implements IGui
 	public final void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
 	}
 
-	public final void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Identifier texture, int light, float doorLeftValue, float doorRightValue, boolean isEnd1Head, boolean isEnd2Head, boolean head1IsFront, boolean renderDetails) {
-		render(matrices, vertexConsumers.getBuffer(MoreRenderLayers.getLight(texture)), RenderStage.LIGHTS, MAX_LIGHT, doorLeftValue, doorRightValue, isEnd1Head, isEnd2Head, head1IsFront);
-		render(matrices, vertexConsumers.getBuffer(MoreRenderLayers.getInterior(texture)), RenderStage.INTERIOR, MAX_LIGHT, doorLeftValue, doorRightValue, isEnd1Head, isEnd2Head, head1IsFront);
+	public final void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, Identifier texture, int light, float doorLeftValue, float doorRightValue, boolean isEnd1Head, boolean isEnd2Head, boolean head1IsFront, boolean renderDetails, Route thisRoute) {
+		render(matrices, vertexConsumers, vertexConsumers.getBuffer(MoreRenderLayers.getLight(texture)), RenderStage.LIGHTS, MAX_LIGHT, doorLeftValue, doorRightValue, isEnd1Head, isEnd2Head, head1IsFront, thisRoute);
+		render(matrices, vertexConsumers, vertexConsumers.getBuffer(MoreRenderLayers.getInterior(texture)), RenderStage.INTERIOR, MAX_LIGHT, doorLeftValue, doorRightValue, isEnd1Head, isEnd2Head, head1IsFront, thisRoute);
 
 		if (renderDetails) {
 			for (int position : getDoorPositions()) {
@@ -33,19 +34,21 @@ public abstract class ModelTrainBase extends EntityModel<Entity> implements IGui
 					modelDoorOverlay.render(matrices, vertexConsumers, RenderStage.EXTERIOR, light, position, doorLeftValue, doorRightValue);
 				}
 			}
-			render(matrices, vertexConsumers.getBuffer(MoreRenderLayers.getInteriorTranslucent(texture)), RenderStage.INTERIOR_TRANSLUCENT, MAX_LIGHT, doorLeftValue, doorRightValue, isEnd1Head, isEnd2Head, head1IsFront);
+			render(matrices, vertexConsumers, vertexConsumers.getBuffer(MoreRenderLayers.getInteriorTranslucent(texture)), RenderStage.INTERIOR_TRANSLUCENT, MAX_LIGHT, doorLeftValue, doorRightValue, isEnd1Head, isEnd2Head, head1IsFront, thisRoute);
 		}
 
-		render(matrices, vertexConsumers.getBuffer(MoreRenderLayers.getExterior(texture)), RenderStage.EXTERIOR, light, doorLeftValue, doorRightValue, isEnd1Head, isEnd2Head, head1IsFront);
+		render(matrices, vertexConsumers, vertexConsumers.getBuffer(MoreRenderLayers.getExterior(texture)), RenderStage.EXTERIOR, light, doorLeftValue, doorRightValue, isEnd1Head, isEnd2Head, head1IsFront, thisRoute);
 	}
 
-	private void render(MatrixStack matrices, VertexConsumer vertices, RenderStage renderStage, int light, float doorLeftValue, float doorRightValue, boolean isEnd1Head, boolean isEnd2Head, boolean head1IsFront) {
+	private void render(MatrixStack matrices,VertexConsumerProvider vertexConsumers,VertexConsumer vertices, RenderStage renderStage, int light, float doorLeftValue, float doorRightValue, boolean isEnd1Head, boolean isEnd2Head, boolean head1IsFront, Route thisRoute) {
 		for (int position : getWindowPositions()) {
 			renderWindowPositions(matrices, vertices, renderStage, light, position, isEnd1Head, isEnd2Head);
 		}
 		for (int position : getDoorPositions()) {
 			renderDoorPositions(matrices, vertices, renderStage, light, position, doorLeftValue, doorRightValue, isEnd1Head, isEnd2Head);
 		}
+
+		renderLCDScreen(matrices, vertexConsumers, vertices, renderStage, light, 0, thisRoute);
 
 		if (isEnd1Head) {
 			renderHeadPosition1(matrices, vertices, renderStage, light, getEndPositions()[0], head1IsFront);
@@ -71,6 +74,8 @@ public abstract class ModelTrainBase extends EntityModel<Entity> implements IGui
 	protected abstract void renderEndPosition1(MatrixStack matrices, VertexConsumer vertices, RenderStage renderStage, int light, int position);
 
 	protected abstract void renderEndPosition2(MatrixStack matrices, VertexConsumer vertices, RenderStage renderStage, int light, int position);
+
+	protected abstract void renderLCDScreen(MatrixStack matrices, VertexConsumerProvider vertexConsumers, VertexConsumer vertices, RenderStage renderStage, int light, int position, Route route);
 
 	protected abstract ModelDoorOverlayBase getModelDoorOverlay();
 

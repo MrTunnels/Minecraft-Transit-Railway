@@ -1,5 +1,6 @@
 package mtr.model;
 
+import mtr.data.Route;
 import mtr.render.MoreRenderLayers;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumer;
@@ -815,6 +816,9 @@ public class ModelMTrain extends ModelTrainBase {
 				break;
 		}
 	}
+
+	@Override
+	protected void renderLCDScreen(MatrixStack matrices, VertexConsumerProvider vertexConsumers, VertexConsumer vertices, RenderStage renderStage, int light, int position, Route route){}
 
 	@Override
 	protected void renderHeadPosition1(MatrixStack matrices, VertexConsumer vertices, RenderStage renderStage, int light, int position, boolean useHeadlights) {

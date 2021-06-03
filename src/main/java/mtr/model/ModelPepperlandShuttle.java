@@ -1,10 +1,23 @@
 package mtr.model;
 
+import mtr.data.Route;
+import mtr.data.Station;
+import mtr.gui.ClientData;
+import mtr.gui.IGui;
 import mtr.render.MoreRenderLayers;
 import net.minecraft.client.model.ModelPart;
+import net.minecraft.client.render.LightmapTextureManager;
+import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Vector3f;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.GameRules;
+import net.minecraft.world.LightType;
 
 public class ModelPepperlandShuttle extends ModelTrainBase {
 
@@ -420,10 +433,6 @@ public class ModelPepperlandShuttle extends ModelTrainBase {
 		topBarOutRight.setPivot(0.0F, 0.0F, 0.0F);
 		topBarOutRight.setTextureOffset(0, 15).addCuboid(-20.0F, -32.0F, -96.0F, 1.0F, 7.0F, 196.0F, 0.0F, false);
 
-		DBackSticker = new ModelPart(this);
-		DBackSticker.setPivot(0.0F, 0.0F, 0.0F);
-		DBackSticker.setTextureOffset(0, 0).addCuboid(-18.0F, -6.0F, 101.0F, 4.0F, 4.0F, 0.0F, 0.0F, false);
-
 		leftDoor = new ModelPart(this);
 		leftDoor.setPivot(0.0F, 0.0F, 0.0F);
 		leftDoor.setTextureOffset(90, 0).addCuboid(-19.5F, -25.0F, -16.0F, 1.0F, 36.0F, 16.0F, 0.0F, false);
@@ -441,18 +450,6 @@ public class ModelPepperlandShuttle extends ModelTrainBase {
 		door1.setPivot(0.0F, 0.0F, 0.0F);
 		door1.setTextureOffset(90, 0).addCuboid(-19.5F, -25.0F, -96.0F, 1.0F, 36.0F, 16.0F, 0.0F, false);
 
-		DBack = new ModelPart(this);
-		DBack.setPivot(0.0F, 0.0F, 0.0F);
-		DBack.setTextureOffset(0, 0).addCuboid(-19.0F, -29.0F, 102.0F, 38.0F, 5.0F, 0.0F, 0.0F, false);
-
-		DFrontSticker = new ModelPart(this);
-		DFrontSticker.setPivot(0.0F, 0.0F, 0.0F);
-		DFrontSticker.setTextureOffset(0, 0).addCuboid(-18.0F, -6.0F, -100.0F, 4.0F, 4.0F, 0.0F, 0.0F, false);
-
-		DSide1 = new ModelPart(this);
-		DSide1.setPivot(0.0F, 0.0F, 0.0F);
-		DSide1.setTextureOffset(0, 0).addCuboid(-20.0F, -10.0F, -74.0F, 0.0F, 6.0F, 25.0F, 0.0F, false);
-
 		front = new ModelPart(this);
 		front.setPivot(0.0F, 0.0F, 0.0F);
 		front.setTextureOffset(0, 0).addCuboid(-20.0F, -32.0F, -100.0F, 40.0F, 42.0F, 4.0F, 0.0F, false);
@@ -464,10 +461,6 @@ public class ModelPepperlandShuttle extends ModelTrainBase {
 		rightWall2 = new ModelPart(this);
 		rightWall2.setPivot(0.0F, 0.0F, 0.0F);
 		rightWall2.setTextureOffset(0, 230).addCuboid(-20.0F, -25.0F, 16.0F, 1.0F, 36.0F, 84.0F, 0.0F, false);
-
-		DFront = new ModelPart(this);
-		DFront.setPivot(0.0F, 0.0F, 0.0F);
-		DFront.setTextureOffset(0, 0).addCuboid(-19.0F, -29.0F, -100.0F, 38.0F, 5.0F, 0.0F, 0.0F, false);
 
 		leftWall = new ModelPart(this);
 		leftWall.setPivot(0.0F, 0.0F, 0.0F);
@@ -489,6 +482,31 @@ public class ModelPepperlandShuttle extends ModelTrainBase {
 		seat.addChild(back_left_r1);
 		setRotationAngle(back_left_r1, -0.2618F, 0.0F, -0.0873F);
 		back_left_r1.setTextureOffset(24, 0).addCuboid(-3.0F, -10.0F, 0.0F, 3.0F, 10.0F, 1.0F, 0.0F, true);
+
+		DBackSticker = new ModelPart(this);
+		DBackSticker.setTextureSize(4,4);
+		DBackSticker.setPivot(0.0F, 0.0F, 0.0F);
+		DBackSticker.setTextureOffset(0, 0).addCuboid(-18.0F, -6.0F, 101.0F, 4.0F, 4.0F, 0.0F, 0.0F, false);
+
+		DBack = new ModelPart(this);
+		DBack.setTextureSize(38,5);
+		DBack.setPivot(0.0F, 0.0F, 0.0F);
+		DBack.setTextureOffset(0, 0).addCuboid(-19.0F, -29.0F, 102.0F, 38.0F, 5.0F, 0.0F, 0.0F, false);
+
+		DFront = new ModelPart(this);
+		DFront.setTextureSize(38,5);
+		DFront.setPivot(0.0F, 0.0F, 0.0F);
+		DFront.setTextureOffset(0, 0).addCuboid(-19.0F, -29.0F, -100.0F, 38.0F, 5.0F, 0.0F, 0.0F, false);
+
+		DFrontSticker = new ModelPart(this);
+		DFrontSticker.setTextureSize(4,4);
+		DFrontSticker.setPivot(0.0F, 0.0F, 0.0F);
+		DFrontSticker.setTextureOffset(0, 0).addCuboid(-18.0F, -6.0F, -100.0F, 4.0F, 4.0F, 0.0F, 0.0F, false);
+
+		DSide1 = new ModelPart(this);
+		DSide1.setTextureSize(25,6);
+		DSide1.setPivot(0.0F, 0.0F, 0.0F);
+		DSide1.setTextureOffset(0, 0).addCuboid(-20.0F, -6.0F, -74.0F, 0.0F, 6.0F, 25.0F, 0.0F, false);
 	}
 
 	private static final int DOOR_MAX = 14;
@@ -507,6 +525,7 @@ public class ModelPepperlandShuttle extends ModelTrainBase {
 				//renderOnce(leftDoor, matrices, vertices, light, position);
 				renderOnce(bottom, matrices, vertices, light, position);
 				renderOnce(front, matrices, vertices, light, position);
+				renderOnce(DFront, matrices, vertices, light, position);
 				renderOnce(back, matrices, vertices, light, position);
 				renderOnce(topBarOutLeft, matrices, vertices, light, position);
 				renderOnce(topBarOutRight, matrices, vertices, light, position);
@@ -603,6 +622,8 @@ public class ModelPepperlandShuttle extends ModelTrainBase {
 				renderOnce(roof_end_exterior, matrices, vertices, light, position);
 				break;
 		}*/
+
+
 	}
 
 	@Override
@@ -615,6 +636,29 @@ public class ModelPepperlandShuttle extends ModelTrainBase {
 		renderHeadPosition2(matrices, vertices, renderStage, light, position, false);
 	}
 
+	@Override
+	protected void renderLCDScreen(MatrixStack matrices, VertexConsumerProvider vertexConsumers, VertexConsumer vertices, RenderStage renderStage, int light, int position, Route route){
+		String thisRouteName = route.name.split("\\|\\|")[0];
+		Identifier lcd;
+		Identifier sticker;
+		Identifier side_sticker;
+		try{
+			lcd = new Identifier("mtr:textures/displays/pepperlandshuttle/"+ thisRouteName + "/lcd.png");
+			sticker = new Identifier("mtr:textures/displays/pepperlandshuttle/"+ thisRouteName + "/sticker.png");
+			side_sticker = new Identifier("mtr:textures/displays/pepperlandshuttle/"+ thisRouteName + "/side_sticker.png");
+		}
+		catch(Exception e){
+			lcd = new Identifier("mtr:textures/displays/pepperlandshuttle/default/lcd.png");
+			sticker = new Identifier("mtr:textures/displays/pepperlandshuttle/default/sticker.png");
+			side_sticker = new Identifier("mtr:textures/displays/pepperlandshuttle/default/side_sticker.png");
+		}
+
+		renderOnce(DFront, matrices, vertexConsumers.getBuffer(MoreRenderLayers.getInterior(lcd)), light, 0);
+		renderOnce(DBack, matrices, vertexConsumers.getBuffer(MoreRenderLayers.getInterior(lcd)), light, 0);
+		renderOnce(DFrontSticker, matrices, vertexConsumers.getBuffer(MoreRenderLayers.getInterior(sticker)), light, 0);
+		renderOnce(DBackSticker, matrices, vertexConsumers.getBuffer(MoreRenderLayers.getInterior(sticker)), light, 0);
+		renderOnce(DSide1, matrices, vertexConsumers.getBuffer(MoreRenderLayers.getInterior(side_sticker)), light, 0);
+	}
 	@Override
 	protected ModelDoorOverlayBase getModelDoorOverlay() {
 		return MODEL_DOOR_OVERLAY;
@@ -714,4 +758,15 @@ public class ModelPepperlandShuttle extends ModelTrainBase {
 			 */
 		}
 	}
+
+
+	private static String getLastStationString(Route route) {
+		final Station station = ClientData.platformIdToStation.get(route.platformIds.get(route.platformIds.size() - 1));
+		return station == null ? "" : station.name;
+	}
+	private static String getFirstStationString(Route route) {
+		final Station station = ClientData.platformIdToStation.get(route.platformIds.get(0));
+		return station == null ? "" : station.name;
+	}
+
 }

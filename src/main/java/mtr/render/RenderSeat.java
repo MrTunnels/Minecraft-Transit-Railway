@@ -121,7 +121,7 @@ public class RenderSeat extends EntityRenderer<EntitySeat> implements IGui {
 					MODEL_MINECART.setAngles(null, 0, 0, -0.1F, 0, 0);
 					MODEL_MINECART.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
 				} else {
-					model.render(matrices, vertexConsumers, getTrainTexture(trainType.id), light, doorLeftValue, doorRightValue, isEnd1Head, isEnd2Head, true, player.getPos().squaredDistanceTo(offsetX, offsetY, offsetZ) <= DETAIL_RADIUS_SQUARED);
+					model.render(matrices, vertexConsumers, getTrainTexture(trainType.id), light, doorLeftValue, doorRightValue, isEnd1Head, isEnd2Head, true, player.getPos().squaredDistanceTo(offsetX, offsetY, offsetZ) <= DETAIL_RADIUS_SQUARED, route);
 				}
 
 				matrices.pop();
